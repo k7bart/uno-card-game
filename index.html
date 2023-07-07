@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./styles.css" />
+        <title>Uno Game</title>
+    </head>
+    <body>
+        <div id="container">
+            <div id="greeting" class="black">
+                <p>
+                    Welcome! Prepare to immerse yourself in a world of thrilling
+                    card matches and strategic <b class="gradient-text">UNO</b>
+                    gameplay. Whether you're a seasoned Uno pro or a newcomer to
+                    the game, we have everything you need to have a fantastic
+                    time. Your opponent for this time is
+                    <b class="gradient-text">R2-D2</b>.
+                </p>
+                <p>Would you kindly provide your name?</p>
+                <div id="input-container">
+                    <input type="text" maxlength="20" />
+                    <button class="confirm-button green">
+                        <div id="button-logo"></div>
+                    </button>
+                </div>
+            </div>
+            <div id="score">
+                <div id="player-score-container">
+                    <div id="player-name">Kate</div>
+                    <div id="player-score">00</div>
+                </div>
+                <div id="computer-score-container">
+                    <div id="computer-name">Wall-E</div>
+                    <div id="computer-score">00</div>
+                </div>
+            </div>
+            <div id="colors-menu">
+                <button class="color red"></button>
+                <button class="color yellow"></button>
+                <button class="color green"></button>
+                <button class="color blue"></button>
+            </div>
+            <div style="display: flex">
+                <div id="computer-cards"></div>
+            </div>
+            <div id="table">
+                <div id="deck" class="card black">
+                    <h1 class="gradient-text">UNO</h1>
+                </div>
+                <div id="main-card-container"></div>
+            </div>
+            <div style="display: flex">
+                <div id="player-cards"></div>
+            </div>
+            <div id="uno-buttons-container">
+                <button class="uno-button">
+                    <p class="gradient-text">! UNO !</p>
+                </button>
+                <button class="uno-button">
+                    <p class="gradient-text">! UNO !</p>
+                </button>
+            </div>
+        </div>
+        <div id="opacity"></div>
+        <script src="./script.js"></script>
+    </body>
+</html>

@@ -1,6 +1,6 @@
-import robotNames from "./robot-names";
-import Deck from "./deck";
-import { shuffle } from "./utils";
+import robotNames from "./robot-names.js";
+import Deck from "./deck.js";
+import { shuffle } from "./utils.js";
 
 function setRandomRobotName() {
     const randomIndex = Math.floor(Math.random() * robotNames.length);
@@ -39,10 +39,10 @@ function removeCardFromPlayerCards(cardToRemove) {
 //     unoButtons.style.display = "flex";
 // }
 
-createDeck();
-shuffle(deck);
-giveCards(7, computer);
-giveCards(7, player);
-startGame();
+// createDeck();
+// shuffle(deck);
+// giveCards(7, computer);
+// giveCards(7, player);
+// startGame();
 
 //кінець раунду і кінець гри

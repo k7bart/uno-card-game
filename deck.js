@@ -1,3 +1,5 @@
+import Card from "./card.js";
+
 const colors = ["red", "yellow", "green", "blue"];
 
 const symbols = [
@@ -15,25 +17,24 @@ const symbols = [
     "drawTwo",
 ];
 
-const jokers = ["wild", "wildDrawFour"];
+const wildSymbols = ["wild", "wildDrawFour"];
 
-export default class Deck {
+export class Deck {
     constructor() {
         this.items = [];
 
-        for (let color of colors) this.items.push({ color, symbol: "0" });
+        for (let color of colors) this.items.push(new Card(color, "0"));
 
         for (let color of colors) {
             for (let symbol of symbols) {
-                let card = { color, symbol };
-
-                this.items.concat([card, card]);
+                let card = new Card(color, symbol);
+                this.items.push(card, card);
             }
         }
 
-        for (let symbol of jokers) {
+        for (let symbol of wildSymbols) {
             for (let i = 0; i < 4; i++) {
-                this.items.push({ color: "black", symbol });
+                this.items.push(new Card("black", symbol));
             }
         }
     }
@@ -41,4 +42,16 @@ export default class Deck {
     get isEmpty() {
         return !!this.items.length;
     }
+
+    shuffle() {
+        for (let i = this.items.length - 1; i > 0; i--) {
+            const j = Math.trunc(Math.random() * i);
+            [this.items[i], this.items[j]] = [this.items[j], this.items[i]];
+        }
+    }
 }
+
+let deck = new Deck();
+deck.shuffle();
+
+export { deck };

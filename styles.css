@@ -14,12 +14,10 @@
 }
 
 #container {
-    /* display: flex;
+    display: flex;
     justify-content: space-around;
-    height: 980px;
-    width: auto;
     flex-direction: column;
-    align-items: center; */
+    align-items: center;
 }
 
 #computer-cards,
@@ -43,11 +41,6 @@
 
 #computer-cards.card {
     position: absolute;
-}
-
-#main-card-container {
-    margin-left: 150px;
-    /* потім забрати, додала щоб було видно колоду */
 }
 
 #deck {
@@ -97,7 +90,6 @@
 .card {
     width: 150px;
     height: 215px;
-    /* margin: 5px; */
     border-radius: 20px;
 
     display: flex;
@@ -108,17 +100,24 @@
 
     color: white;
 
-    position: absolute;
+    /* position: absolute; */
 }
 
+/* для накладання */
 .card-wrapper {
-    position: relative;
-    width: 50px;
-    height: 215px;
+    /* position: relative; */
+    /* width: 50px; */
+    /* height: 215px; */
+    padding: 5px;
 }
 
 .active-card {
     top: 38%;
+}
+
+.logo {
+    font-size: 32px;
+    width: min-content;
 }
 
 .central-symbol {
@@ -174,12 +173,19 @@
     );
 }
 
-.black {
+.black,
+.back {
     background: linear-gradient(
         174deg,
         rgba(84, 86, 91, 1) 15%,
         rgba(40, 46, 62, 1) 90%
     );
+}
+
+.back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #colors-menu {

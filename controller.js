@@ -1,16 +1,3 @@
-function giveCards(num, actor) {
-    if (!actor.cards) actor.cards = [];
-
-    if (deck.isEmpty) {
-        deck = shuffle(discard);
-        discard = [];
-    }
-
-    actor.cards.push(...deck.splice(0, num));
-
-    updateCardsElement(actor);
-}
-
 deckElement.addEventListener("click", () => giveCards(1, player));
 
 container.addEventListener("click", (event) => {

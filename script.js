@@ -1,19 +1,10 @@
 import robotNames from "./robot-names.js";
-import Deck from "./deck.js";
-import { shuffle } from "./utils.js";
+import { Player, Computer } from "./player.js";
+import { deck } from "./deck.js";
 
 function setRandomRobotName() {
     const randomIndex = Math.floor(Math.random() * robotNames.length);
     computerName.innerText = robotNames[randomIndex].name;
-}
-
-function returnElementSymbol(element) {
-    let symbol = element.innerText.split("\n")[0];
-
-    if (symbol === "+2") symbol = "drawTwo";
-    if (symbol === "+4") symbol = "wildDrawFour";
-
-    return symbol;
 }
 
 function removeCardFromPlayerCards(cardToRemove) {
@@ -39,10 +30,15 @@ function removeCardFromPlayerCards(cardToRemove) {
 //     unoButtons.style.display = "flex";
 // }
 
-// createDeck();
-// shuffle(deck);
-// giveCards(7, computer);
-// giveCards(7, player);
-// startGame();
+const mainCardContainer = document.getElementById("main-card-container");
 
-//кінець раунду і кінець гри
+let mainCard = deck.items.shift();
+let player = new Player();
+let computer = new Computer();
+
+player.draw(7);
+computer.draw(7);
+
+mainCardContainer.innerHTML += mainCard.renderFace();
+player.renderCards();
+computer.renderCards();

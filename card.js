@@ -4,11 +4,16 @@ const symbolMap = {
 };
 
 export default class Card {
-    render(color, symbol) {
-        symbol = symbolMap[symbol] || symbol;
+    constructor(color, symbol) {
+        this.color = color;
+        this.symbol = symbol;
+    }
 
-        const isNumber = !isNaN(parseInt(symbol));
-        const isWild = symbol === "wild" || symbol === "+4";
+    renderFace() {
+        this.symbol = symbolMap[this.symbol] || this.symbol;
+
+        const isNumber = !isNaN(parseInt(this.symbol));
+        const isWild = this.symbol === "wild" || this.symbol === "+4";
         const isActive = !isNumber && !isWild;
 
         const gradientClass = isWild ? "gradient-text" : "";
@@ -19,12 +24,26 @@ export default class Card {
 
         return `
             <div class="card-wrapper">
-                <div class="card ${color}">
-                    <div class="small-symbol ${gradientClass}">${symbol}</div>
+                <div class="card ${this.color}">
+                    <div class="small-symbol ${gradientClass}">${
+            this.symbol
+        }</div>
                     <div class="small-symbol central-symbol ${gradientClass} ${centerContainerClassess.join(
             " "
-        )}">${symbol}</div>
-                    <div class="small-symbol ${gradientClass}">${symbol}</div>
+        )}">${this.symbol}</div>
+                    <div class="small-symbol ${gradientClass}">${
+            this.symbol
+        }</div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderBack() {
+        return `
+            <div class="card-wrapper">
+                <div class="card back">    
+                    <div class="gradient-text logo">UNO</div>
                 </div>
             </div>
         `;

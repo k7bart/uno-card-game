@@ -1,6 +1,4 @@
 const container = document.getElementById("container"),
-    mainCardContainer = document.getElementById("main-card-container"),
-    playerCards = document.getElementById("player-cards"),
     opacity = document.getElementById("opacity"),
     colorsMenu = document.getElementById("colors-menu"),
     computerName = document.getElementById("computer-name");

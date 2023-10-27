@@ -1,43 +1,39 @@
-import Deck from "./deck";
-import { isNumber } from "./utils";
+import Deck from "./deck.js";
+import state from "./state.js";
+import { computer } from "./computer.js";
+import { player } from "./player.js";
 
 export default class Game {
-    constructor() {
-        this.deck = new Deck();
-    }
-
     start() {
-        let firstCard = this.deck.shift();
+        state.deck = new Deck();
+        state.deck.shuffle();
 
-        if (isNumber(firstCard.symbol)) {
-            mainCard = firstCard;
+        state.mainCard = state.deck.items.shift();
+        document.getElementById("main-card-container").innerHTML +=
+            state.mainCard.renderFace();
 
-            mainCardContainer.innerHTML += renderCard(
-                mainCard.color,
-                mainCard.symbol
-            );
+        player.draw(7);
+        computer.draw(7);
 
-            return;
-        }
+        player.renderCards();
+        computer.renderCards();
 
-        this.deck.push(firstCard);
-
-        this.start();
+        player.goTurn();
     }
 
-    onEnd(actor) {
+    onEnd(winner) {
         this.isOver = true;
 
         // opacity.style.display = "block";
 
-        if (actor === player)
+        if (winner === player)
             console.log(
-                `Congratulations ${playerName} on your victory in the UNO game! 🎉🥳 Your ability to outmaneuver your opponents and play those wild cards at just the right moment is truly impressive. Enjoy your well-deserved victory and bask in the glory of being the reigning UNO champion! Keep up the great work and continue spreading joy through friendly competition. Bravo! 👏`
+                `Congratulations ${player.name} on your victory in the UNO game! 🎉🥳 Your ability to outmaneuver your opponents and play those wild cards at just the right moment is truly impressive. Enjoy your well-deserved victory and bask in the glory of being the reigning UNO champion! Keep up the great work and continue spreading joy through friendly competition. Bravo! 👏`
             );
 
-        if (actor === computer)
+        if (winner === computer)
             console.log(
-                `This time won ${randomRobotName}! ${playerName}, even though you didn't emerge as the victor in the UNO game, don't let that dampen your spirits! 🌟 Remember that the true joy lies in the thrill of the game itself, the laughter shared, and the memories created. Losing is just a part of the journey towards improvement and growth.  So, keep your head held high, embrace the lessons learned, and get ready for the next UNO adventure. You're a true champion in your own right! 💪🌟`
+                `This time won ${winner.name}! ${player.name}, even though you didn't emerge as the victor in the UNO game, don't let that dampen your spirits! 🌟 Remember that the true joy lies in the thrill of the game itself, the laughter shared, and the memories created. Losing is just a part of the journey towards improvement and growth.  So, keep your head held high, embrace the lessons learned, and get ready for the next UNO adventure. You're a true champion in your own right! 💪🌟`
             );
     }
 }

@@ -1,46 +1,23 @@
-import { deck, Deck } from "./deck.js";
-
-class Actor {
-    constructor() {
-        this.cards = [];
-    }
-
-    draw(num) {
-        if (deck.items.isEmpty) {
-            deck.items = new Deck();
-            deck.items.shuffle();
-        }
-
-        this.cards.push(...deck.items.splice(0, num));
-    }
-}
-
-export class Computer extends Actor {
-    constructor(cards) {
-        super(cards);
-    }
-
-    renderCards() {
-        const computerCardsElement = document.getElementById("computer-cards");
-
-        computerCardsElement.innerHTML += this.cards.reduce(
-            (total, card) => total + card.renderBack(),
-            ""
-        );
-    }
-}
+import Actor from "./actor.js";
+import handlePlayerTurn from "./player-turn.js";
 
 export class Player extends Actor {
-    constructor(cards) {
-        super(cards);
+    constructor(cards, name) {
+        super(cards, name);
     }
 
     renderCards() {
-        const playerCardsElement = document.getElementById("player-cards");
-
-        playerCardsElement.innerHTML += this.cards.reduce(
+        document.getElementById("player-cards").innerHTML = this.cards.reduce(
             (total, card) => total + card.renderFace(),
             ""
         );
     }
+
+    goTurn() {
+        handlePlayerTurn();
+    }
 }
+
+let player = new Player("Kate");
+
+export { player };

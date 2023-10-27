@@ -19,7 +19,7 @@ const symbols = [
 
 const wildSymbols = ["wild", "wildDrawFour"];
 
-export class Deck {
+export default class Deck {
     constructor() {
         this.items = [];
 
@@ -50,8 +50,3 @@ export class Deck {
         }
     }
 }
-
-let deck = new Deck();
-deck.shuffle();
-
-export { deck };

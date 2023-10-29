@@ -2,6 +2,8 @@ let state = {
     mainCard: {},
     deck: null,
     game: null,
+    player: {},
+    computer: {},
 };
 
 // TODO: перенести звідси?

@@ -1,7 +1,8 @@
 import Actor from "./actor.js";
 import handleComputerTurn from "./computer-turn.js";
+import robotNames from "./robot-names.js";
 
-export class Computer extends Actor {
+export default class Computer extends Actor {
     constructor(cards, name) {
         super(cards, name);
     }
@@ -38,6 +39,7 @@ export class Computer extends Actor {
     }
 }
 
-let computer = new Computer("Wall-e");
-
-export { computer };
+export function getRandomRobotName() {
+    const randomIndex = Math.floor(Math.random() * robotNames.length);
+    return robotNames[randomIndex].name;
+}

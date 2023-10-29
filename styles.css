@@ -5,6 +5,11 @@
     font-family: "Roboto Mono", monospace;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 #opacity {
     position: fixed;
     inset: 0;
@@ -14,6 +19,7 @@
 }
 
 #container {
+    height: 100%;
     display: flex;
     justify-content: space-around;
     flex-direction: column;
@@ -205,12 +211,9 @@
     border: none;
 }
 
-#greeting {
-    display: none;
-    z-index: 1;
-    padding: 3rem;
+#greeting-container {
+    padding: 50px;
     border-radius: 20px;
-    position: absolute;
     color: white;
     width: 55%;
     text-align: center;
@@ -230,7 +233,6 @@ input {
     text-align: center;
     border: none;
     border-radius: 10px;
-    margin-right: 15px;
 }
 
 .confirm-button {

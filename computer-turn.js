@@ -1,6 +1,3 @@
-import { computer } from "./computer.js";
-import { player } from "./player.js";
-
 import state, { updateMainCard } from "./state.js";
 
 export default function handleComputerTurn(computer) {
@@ -11,22 +8,22 @@ export default function handleComputerTurn(computer) {
         foundMatchedCard = computer.drawAnotherCard();
     }
 
-    computer.removeCard(foundMatchedCard);
-    computer.renderCards();
+    state.computer.removeCard(foundMatchedCard);
+    state.computer.renderCards();
     updateMainCard(foundMatchedCard);
 
     if (foundMatchedCard.symbol === "skip") {
         setTimeout(() => {
-            computer.goTurn();
+            state.computer.goTurn();
         }, 1000);
         return;
     }
 
     if (foundMatchedCard.symbol === "drawTwo") {
-        player.draw(2);
-        player.renderCards();
+        state.player.draw(2);
+        state.player.renderCards();
         setTimeout(() => {
-            computer.goTurn();
+            state.computer.goTurn();
         }, 1000);
         return;
     }
@@ -38,8 +35,8 @@ export default function handleComputerTurn(computer) {
         handleWildCard(foundMatchedCard.symbol);
     }
 
-    if (computer.cards.length === 1) console.log("UNO!"); // якщо у компʼютера одна карта за правилами має про це повідомити, переписати
-    if (computer.cards.length === 0) state.game.onEnd(computer);
+    if (state.computer.cards.length === 1) console.log("UNO!"); // якщо у компʼютера одна карта за правилами має про це повідомити, переписати
+    if (state.computer.cards.length === 0) state.game.onEnd(state.computer);
 }
 
 // TODO: переписати на щось менше
@@ -102,10 +99,10 @@ function handleWildCard(symbol) {
     updateMainCard(state.mainCard);
 
     if (symbol === "+4") {
-        player.draw(4);
-        player.renderCards();
+        state.player.draw(4);
+        state.player.renderCards();
         setTimeout(() => {
-            computer.goTurn();
+            state.computer.goTurn();
         }, 1000);
         return;
     }

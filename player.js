@@ -1,7 +1,7 @@
 import Actor from "./actor.js";
 import handlePlayerTurn from "./player-turn.js";
 
-export class Player extends Actor {
+export default class Player extends Actor {
     constructor(cards, name) {
         super(cards, name);
     }
@@ -17,7 +17,3 @@ export class Player extends Actor {
         handlePlayerTurn();
     }
 }
-
-let player = new Player("Kate");
-
-export { player };

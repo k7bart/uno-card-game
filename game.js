@@ -35,19 +35,38 @@ export default class Game {
     }
 
     onEnd(winner) {
-        this.isOver = true;
+        const playerWon = `Congratulations <b class="gradient-text">${state.player.name}</b> on your victory in the UNO game! 🎉🥳 Your ability to outmaneuver your opponents and play those wild cards at just the right moment is truly impressive. Enjoy your well-deserved victory and bask in the glory of being the reigning UNO champion! Keep up the great work and continue spreading joy through friendly competition. Bravo!👏`;
+        const playerLost = `This time won <b class="gradient-text">${winner.name}</b>! <b class="gradient-text">${state.player.name}</b>, even though you didn't emerge as the victor in the UNO game, don't let that dampen your spirits! 🌟 Losing is just a part of the journey towards improvement and growth. So, keep your head held high, embrace the lessons learned, and get ready for the next UNO adventure. You're a true champion in your own right!💪🌟`;
 
-        // opacity.style.display = "block";
+        const announcement = document.createElement("div");
+        announcement.id = "announcement";
+        announcement.className = "black";
+        announcement.innerHTML = `
+            <p class="announcement-text">
+                ${winner === state.player ? playerWon : playerLost} 
+            </p>
+            <button id="another-round-button">
+                <p class="gradient-text">Another round!</p>
+            </button>
+        `;
 
-        if (winner === state.player)
-            console.log(
-                `Congratulations ${state.player.name} on your victory in the UNO game! 🎉🥳 Your ability to outmaneuver your opponents and play those wild cards at just the right moment is truly impressive. Enjoy your well-deserved victory and bask in the glory of being the reigning UNO champion! Keep up the great work and continue spreading joy through friendly competition. Bravo! 👏`
-            );
+        opacity.style.display = "block";
+        document.getElementById("container").appendChild(announcement);
 
-        if (winner === state.computer)
-            console.log(
-                `This time won ${winner.name}! ${state.player.name}, even though you didn't emerge as the victor in the UNO game, don't let that dampen your spirits! 🌟 Remember that the true joy lies in the thrill of the game itself, the laughter shared, and the memories created. Losing is just a part of the journey towards improvement and growth.  So, keep your head held high, embrace the lessons learned, and get ready for the next UNO adventure. You're a true champion in your own right! 💪🌟`
-            );
+        winner.score += getRoundScore(winner);
+        updateScoreboard(winner);
+
+        document
+            .getElementById("another-round-button")
+            .addEventListener("click", () => {
+                announcement.remove();
+                opacity.style.display = "none";
+
+                state.computer.cards = [];
+                state.player.cards = [];
+
+                this.start();
+            });
     }
 }
 
@@ -78,17 +97,15 @@ function renderBoard() {
         <div id="score">
             <div id="player-score-container">
                 <div id="player-name">${state.player.name}</div>
-                <div id="player-score">00</div>
+                <div id="player-score">${state.player.score}</div>
             </div>
             <div id="computer-score-container">
                 <div id="computer-name">${state.computer.name}</div>
-                <div id="computer-score">00</div>
+                <div id="computer-score">${state.computer.score}</div>
             </div>
         </div>
 
-        <div style="display: flex">
-            <div id="computer-cards"></div>
-        </div>
+        <div id="computer-cards"></div>
 
         <div id="table">
             <div id="deck" class="card back">
@@ -97,9 +114,8 @@ function renderBoard() {
             <div id="main-card-container"></div>
         </div>
 
-        <div style="display: flex">
-            <div id="player-cards"></div>
-        </div>`;
+        <div id="player-cards"></div>
+        `;
 }
 
 function renderUnoButton() {
@@ -114,11 +130,46 @@ function renderUnoButton() {
 </div>`;
 }
 
-function renderColorPicker() {
-    return `    <div id="colors-menu">
-    <button class="color red"></button>
-    <button class="color yellow"></button>
-    <button class="color green"></button>
-    <button class="color blue"></button>
-</div>`;
+export function renderColorPicker() {
+    const colorsMenu = document.createElement("div");
+    colorsMenu.id = "colors-menu";
+    colorsMenu.innerHTML = `
+    <div id="colors-menu">
+        <button class="color red"></button>
+        <button class="color yellow"></button>
+        <button class="color green"></button>
+        <button class="color blue"></button>
+    </div>`;
+
+    document.getElementById("container").appendChild(colorsMenu);
+}
+
+function updateScoreboard(winner) {
+    const scoreElement =
+        winner === state.player
+            ? document.getElementById("player-score")
+            : document.getElementById("computer-score");
+
+    scoreElement.innerText = winner.score;
+}
+
+function getRoundScore(winner) {
+    let loser;
+    winner === state.player ? (loser = state.computer) : (loser = state.player);
+
+    const score = loser.cards.reduce((totalScore, card) => {
+        if (card.symbol === "+4" || card.symbol === "wild") {
+            return totalScore + 50;
+        }
+        if (
+            card.symbol === "skip" ||
+            card.symbol === "reverse" ||
+            card.symbol === "+2"
+        ) {
+            return totalScore + 20;
+        }
+        return totalScore + Number(card.symbol);
+    }, 0);
+
+    return score;
 }

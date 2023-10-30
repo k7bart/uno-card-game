@@ -19,7 +19,7 @@ export default function handleComputerTurn(computer) {
         return;
     }
 
-    if (foundMatchedCard.symbol === "drawTwo") {
+    if (foundMatchedCard.symbol === "+2") {
         state.player.draw(2);
         state.player.renderCards();
         setTimeout(() => {
@@ -35,8 +35,11 @@ export default function handleComputerTurn(computer) {
         handleWildCard(foundMatchedCard.symbol);
     }
 
-    if (state.computer.cards.length === 1) console.log("UNO!"); // якщо у компʼютера одна карта за правилами має про це повідомити, переписати
-    if (state.computer.cards.length === 0) state.game.onEnd(state.computer);
+    if (state.computer.hasOneCard) console.log("UNO!"); // якщо у компʼютера одна карта за правилами має про це повідомити, переписати
+    if (state.computer.hasNoCards) state.game.onEnd(state.computer);
+    setTimeout(() => {
+        state.currentPlayer = state.player;
+    }, 500);
 }
 
 // TODO: переписати на щось менше
@@ -49,7 +52,7 @@ function findMatchedCard(cards) {
 
     if (matchedColors.length > 0) {
         const matchedColorAndDrawTwo = matchedColors.find(
-            (card) => card.symbol === "drawTwo"
+            (card) => card.symbol === "+2"
         );
         if (matchedColorAndDrawTwo) {
             foundMatchCard = matchedColorAndDrawTwo;
@@ -82,9 +85,7 @@ function findMatchedCard(cards) {
         return foundMatchCard;
     }
 
-    const matchedWildDrawFour = cards.find(
-        (card) => card.symbol === "wildDrawFour"
-    );
+    const matchedWildDrawFour = cards.find((card) => card.symbol === "+4");
     if (matchedWildDrawFour) {
         foundMatchCard = matchedWildDrawFour;
         return foundMatchCard;
@@ -113,13 +114,20 @@ function findMostCommonColor() {
     let maxItemsColor;
 
     ["red", "yellow", "blue", "green"].forEach((color) => {
-        const cards = computer.cards.filter((card) => card.color === color);
+        const cards = state.computer.cards.filter(
+            (card) => card.color === color
+        );
 
         if (cards.length <= maxItems) return;
 
         maxItems = cards.length;
         maxItemsColor = color;
     });
+
+    if (!maxItemsColor)
+        return ["red", "yellow", "blue", "green"][
+            Math.floor(Math.random() * 4)
+        ];
 
     return maxItemsColor;
 }

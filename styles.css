@@ -11,6 +11,7 @@ body {
 }
 
 #opacity {
+    z-index: 1;
     position: fixed;
     inset: 0;
     background: white;
@@ -36,11 +37,7 @@ body {
     display: flex;
     margin: 0 auto;
     justify-content: center;
-}
-
-#computer-cards,
-#player-cards {
-    padding-right: 100px;
+    align-items: center;
 }
 
 #computer-cards.card {
@@ -191,14 +188,13 @@ body {
 }
 
 #colors-menu {
-    z-index: 1;
+    z-index: 2;
     gap: 1rem;
     padding: 1.5rem;
     border-radius: 20px;
     position: absolute;
     background-color: rgba(128, 128, 128, 0.5);
-    /* display: flex; */
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: space-evenly;
     backdrop-filter: blur(20px);
@@ -211,7 +207,10 @@ body {
     border: none;
 }
 
-#greeting-container {
+#greeting-container,
+#announcement {
+    z-index: 2;
+    position: absolute;
     padding: 50px;
     border-radius: 20px;
     color: white;
@@ -219,6 +218,18 @@ body {
     text-align: center;
     min-width: 540px;
     line-height: 1.5rem;
+}
+
+.announcement-text {
+    padding-bottom: 30px;
+}
+
+#another-round-button {
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 24px;
+    border: none;
+    background-color: rgb(255, 255, 255, 0.1);
 }
 
 #input-container {

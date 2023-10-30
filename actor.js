@@ -5,6 +5,7 @@ export default class Actor {
     constructor(name) {
         this.name = name;
         this.cards = [];
+        this.score = 0;
     }
 
     draw(num) {
@@ -31,5 +32,12 @@ export default class Actor {
         let removedCard = this.cards.splice(foundCardIndex, 1)[0];
 
         return removedCard;
+    }
+
+    get hasNoCards() {
+        return this.cards.length === 0 ? true : false;
+    }
+    get hasOneCard() {
+        return this.cards.length === 1 ? true : false;
     }
 }

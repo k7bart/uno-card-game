@@ -2,8 +2,8 @@ import Actor from "./actor.js";
 import handlePlayerTurn from "./player-turn.js";
 
 export default class Player extends Actor {
-    constructor(cards, name) {
-        super(cards, name);
+    constructor(cards, name, score) {
+        super(cards, name, score);
     }
 
     renderCards() {

@@ -4,6 +4,7 @@ let state = {
     game: null,
     player: {},
     computer: {},
+    currentPlayer: null,
 };
 
 // TODO: перенести звідси?

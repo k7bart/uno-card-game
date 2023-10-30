@@ -1,75 +1,117 @@
 import Card from "./card.js";
 import state, { updateMainCard } from "./state.js";
+import { renderColorPicker } from "./game.js";
 
 export default function handlePlayerTurn() {
     document.getElementById("deck").addEventListener("click", () => {
+        if (state.currentPlayer === state.computer) return;
         state.player.draw(1);
         state.player.renderCards();
     });
 
-    document.getElementById("container").addEventListener("click", (event) => {
-        const clickedCardElement = event.target.closest("#player-cards .card");
+    document.getElementById("container").addEventListener("click", (e) => {
+        if (state.currentPlayer === state.computer) return;
 
-        if (!clickedCardElement) return;
-        if (clickedCardElement) handlePlayingCard(clickedCardElement);
+        const clickedCard = e.target.closest("#player-cards .card");
+
+        if (!clickedCard) return;
+        if (clickedCard) handlePlayingCard(clickedCard);
     });
 }
 
 //TODO: поділити на функції, виправити логіку
-function handlePlayingCard(clickedCardElement) {
-    const clickedCard = {
-        color: returnElementColor(clickedCardElement),
-        symbol: returnElementSymbol(clickedCardElement),
+function handlePlayingCard(clickedCard) {
+    // const state.player.hasNoCards = state.player.cards.length === 0 ? true : false;
+    // const state.player.hasOneCard = state.player.cards.length === 1 ? true : false;
+
+    const card = {
+        color: returnColor(clickedCard),
+        symbol: returnSymbol(clickedCard),
     };
 
-    Object.setPrototypeOf(clickedCard, Card.prototype);
+    Object.setPrototypeOf(card, Card.prototype);
 
     const wrong =
-        !(clickedCard.color === state.mainCard.color) &&
-        !(clickedCard.symbol === state.mainCard.symbol);
+        card.color !== state.mainCard.color &&
+        card.symbol !== state.mainCard.symbol;
 
     const skip =
-        (clickedCard.color === state.mainCard.color &&
-            clickedCard.symbol === "skip") ||
-        (clickedCard.symbol === "skip" && state.mainCard.symbol === "skip");
+        (card.color === state.mainCard.color && card.symbol === "skip") ||
+        (card.symbol === "skip" && state.mainCard.symbol === "skip");
 
     const drawTwo =
-        (clickedCard.color === state.mainCard.color &&
-            clickedCard.symbol === "drawTwo") ||
-        (clickedCard.symbol === "drawTwo" &&
-            state.mainCard.symbol === "drawTwo");
+        (card.color === state.mainCard.color && card.symbol === "+2") ||
+        (card.symbol === "+2" && state.mainCard.symbol === "+2");
 
-    if (wrong) {
-        clickedCardElement.classList.add("shake");
-        setTimeout(() => clickedCardElement.classList.remove("shake"), 500);
+    if (skip || drawTwo) {
+        updateCards(card);
+
+        if (state.player.hasOneCard) {
+            console.log("UNO!"); // TODO: придумати щось інше
+        }
+
+        if (drawTwo) {
+            state.computer.draw(2);
+            state.computer.renderCards();
+        }
+
+        if (state.player.hasNoCards) {
+            state.game.onEnd(state.player);
+            return;
+        }
+
         return;
     }
 
-    if (skip || drawTwo) {
-        updateCards(clickedCard);
-        if (drawTwo) giveCards(2, computer);
+    if (card.color === "black") {
+        updateCards(card);
+
+        if (state.player.hasOneCard) {
+            console.log("UNO!"); // TODO: придумати щось інше
+        }
+
+        if (card.symbol === "+4") {
+            state.computer.draw(4);
+            state.computer.renderCards();
+        }
+
+        if (state.player.hasNoCards) {
+            state.game.onEnd(state.player);
+            return;
+        }
+
+        opacity.style.display = "block";
+
+        renderColorPicker();
+
+        document
+            .getElementById("colors-menu")
+            .addEventListener("click", (e) => handleColorPicking(e, card));
+
         return;
     }
 
     if (
-        clickedCard.color === state.mainCard.color ||
-        clickedCard.symbol === state.mainCard.symbol
+        card.color === state.mainCard.color ||
+        card.symbol === state.mainCard.symbol
     ) {
-        updateCards(clickedCard);
+        updateCards(card);
+
+        if (state.player.hasOneCard) {
+            console.log("UNO!"); // TODO: придумати щось інше
+        }
+
+        if (state.player.hasNoCards) {
+            state.game.onEnd(state.player);
+            return;
+        }
         setTimeout(() => state.computer.goTurn(), 1000);
         return;
     }
 
-    if (clickedCard.color === "black") {
-        updateCards(clickedCard);
-
-        if (clickedCard.symbol === "wildDrawFour") {
-            giveCards(4, state.computer);
-            state.computer.renderCards();
-        }
-        opacity.style.display = "block";
-        colorsMenu.style.display = "flex";
-
+    if (wrong) {
+        clickedCard.classList.add("shake");
+        setTimeout(() => clickedCard.classList.remove("shake"), 500);
         return;
     }
 }
@@ -79,37 +121,31 @@ function updateCards(card) {
     state.player.renderCards();
     updateMainCard(card);
 }
-
-function returnElementColor(element) {
+function returnColor(element) {
     return element.classList.value.replace("card ", "");
 }
-function returnElementSymbol(element) {
+function returnSymbol(element) {
     return element.innerText.split("\n")[0].trim();
 }
+function handleColorPicking(e, card) {
+    const clickedColor = e.target.closest(".color");
 
-// // якщо вибрано наступний колір
-// const clickedColorElement = event.target.closest(".color");
+    if (!clickedColor) return;
 
-// if (clickedColorElement) {
-//     const clickedColorElementColor =
-//         clickedColorElement.classList.value.replace("color ", ""); // визначили обраний колір
+    const color = clickedColor.classList.value.replace("color ", "");
 
-//     discard.push(mainCard); // поклали основну карту у відбій
+    state.mainCard.color = color;
 
-//     mainCard = { color: clickedColorElementColor, symbol: "" }; // призначили основну карту із визначеним кольором
+    updateMainCard(state.mainCard);
 
-//     mainCardContainer.innerHTML = renderCard(
-//         //перемалювали основну карту
-//         clickedColorElementColor,
-//         "wild"
-//     );
+    opacity.style.display = "none";
+    document.getElementById("colors-menu").remove();
 
-//     opacity.style.display = "none";
-//     colorsMenu.style.display = "none";
+    if (card.symbol === "+4") return;
 
-//     setTimeout(() => {
-//         computerGoTurn(computer);
-//     }, 1000);
+    setTimeout(() => {
+        state.computer.goTurn();
+    }, 1000);
 
-//     return;
-// }
+    return;
+}

@@ -1,10 +1,11 @@
 import Actor from "./actor.js";
 import handleComputerTurn from "./computer-turn.js";
+import state from "./state.js";
 import robotNames from "./robot-names.js";
 
 export default class Computer extends Actor {
-    constructor(cards, name) {
-        super(cards, name);
+    constructor(cards, name, score) {
+        super(cards, name, score);
     }
 
     renderCards() {
@@ -15,6 +16,7 @@ export default class Computer extends Actor {
     }
 
     goTurn() {
+        state.currentPlayer = state.computer;
         handleComputerTurn(this);
     }
 

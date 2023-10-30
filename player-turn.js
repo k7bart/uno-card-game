@@ -31,6 +31,8 @@ function handlePlayingCard(clickedCard) {
 
     Object.setPrototypeOf(card, Card.prototype);
 
+    const wild = card.color === "black";
+
     const wrong =
         card.color !== state.mainCard.color &&
         card.symbol !== state.mainCard.symbol;
@@ -63,7 +65,7 @@ function handlePlayingCard(clickedCard) {
         return;
     }
 
-    if (card.color === "black") {
+    if (wild) {
         updateCards(card);
 
         if (state.player.hasOneCard) {

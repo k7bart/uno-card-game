@@ -11,7 +11,6 @@ export default function handlePlayerTurn() {
 
     document.getElementById("container").addEventListener("click", (e) => {
         if (state.currentPlayer === state.computer) return;
-
         const clickedCard = e.target.closest("#player-cards .card");
 
         if (!clickedCard) return;
@@ -107,6 +106,7 @@ function handlePlayingCard(clickedCard) {
             state.game.onEnd(state.player);
             return;
         }
+        state.currentPlayer = state.computer;
         setTimeout(() => state.computer.goTurn(), 1000);
         return;
     }
@@ -145,6 +145,7 @@ function handleColorPicking(e, card) {
 
     if (card.symbol === "+4") return;
 
+    state.currentPlayer = state.computer;
     setTimeout(() => {
         state.computer.goTurn();
     }, 1000);

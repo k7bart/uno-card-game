@@ -31,6 +31,8 @@ export default class Game {
         state.player.renderCards();
         state.computer.renderCards();
 
+        state.currentPlayer = state.player;
+
         state.player.goTurn();
     }
 

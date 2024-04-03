@@ -10,7 +10,7 @@ export default class Computer extends Actor {
 
     renderCards() {
         document.getElementById("computer-cards").innerHTML = this.cards.reduce(
-            (total, card) => total + card.renderFace(),
+            (total, card) => total + card.renderBack(),
             ""
         );
     }
@@ -22,7 +22,6 @@ export default class Computer extends Actor {
 
     drawAnotherCard() {
         const [nextCard] = this.draw(1);
-        // this.renderCards();
 
         if (
             nextCard.color === state.mainCard.color ||
